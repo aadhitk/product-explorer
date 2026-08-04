@@ -1,0 +1,8 @@
+{
+  "name": "object-index",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node pagination.test.mjs"
+  }
+}
