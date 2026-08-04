@@ -6,6 +6,7 @@ const PER_PAGE = 12;
 let query = "";
 let page = 1;
 let total = 0;
+let sort = ""; // "" or "field-direction", e.g. "price-asc"
 let controller = null;
 let debounceId;
 
@@ -21,6 +22,33 @@ const nextBtn = $("#next");
 const msgBox = $("#message");
 const retryBtn = $("#retry");
 const catalogue = $(".catalogue");
+const sortSelect = $("#sort");
+
+// read initial state (query, page, sort) from the URL, so a shared
+// link or a refresh lands back on the same search/page/sort
+function readStateFromUrl() {
+  const params = new URLSearchParams(window.location.search);
+  query = params.get("q") || "";
+  sort = params.get("sort") || "";
+  const p = parseInt(params.get("page"), 10);
+  page = Number.isInteger(p) && p > 0 ? p : 1;
+
+  searchInput.value = query;
+  sortSelect.value = sort;
+}
+
+// keep the URL in sync with the current query/page/sort so it's
+// shareable and survives a refresh, without adding a history entry
+// per keystroke or page click
+function writeStateToUrl() {
+  const params = new URLSearchParams();
+  if (query) params.set("q", query);
+  if (page > 1) params.set("page", page);
+  if (sort) params.set("sort", sort);
+  const qs = params.toString();
+  const url = window.location.pathname + (qs ? "?" + qs : "");
+  window.history.replaceState(null, "", url);
+}
 
 function showMsg(text, type) {
   msgBox.textContent = text;
@@ -72,6 +100,14 @@ async function fetchProducts() {
   const endpoint = query ? API + "/search" : API;
   const params = new URLSearchParams({ limit: PER_PAGE, skip });
   if (query) params.set("q", query);
+
+  if (sort) {
+    const [field, direction] = sort.split("-");
+    params.set("sortBy", field);
+    params.set("order", direction);
+  }
+
+  writeStateToUrl();
 
   // loading skeleton
   catalogue.setAttribute("aria-busy", "true");
@@ -152,5 +188,18 @@ nextBtn.addEventListener("click", function () {
 
 retryBtn.addEventListener("click", fetchProducts);
 
-// kick it off
+sortSelect.addEventListener("change", function () {
+  sort = sortSelect.value;
+  page = 1;
+  fetchProducts();
+});
+
+// support the browser's back/forward buttons
+window.addEventListener("popstate", function () {
+  readStateFromUrl();
+  fetchProducts();
+});
+
+// kick it off, honoring any query/page/sort already in the URL
+readStateFromUrl();
 fetchProducts();

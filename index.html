@@ -30,6 +30,17 @@
       <section class="catalogue" aria-live="polite" aria-busy="true">
         <div class="catalogue-bar">
           <p id="result-summary">Opening the archive…</p>
+          <label class="sort-control">
+            Sort
+            <select id="sort">
+              <option value="">Relevance</option>
+              <option value="title-asc">Title, A–Z</option>
+              <option value="title-desc">Title, Z–A</option>
+              <option value="price-asc">Price, low–high</option>
+              <option value="price-desc">Price, high–low</option>
+              <option value="rating-desc">Rating, high–low</option>
+            </select>
+          </label>
           <p id="page-label">PAGE —</p>
         </div>
         <div id="message" class="message" hidden></div>

@@ -19,6 +19,8 @@ Then open the address printed by the server.
 - Product cards show title, price, thumbnail, and rating.
 - Search calls `/products/search` after a 300 ms debounce.
 - Pagination requests only the active API page and handles first, last, partial, and empty-result pages.
+- Sorting by title, price, or rating via the API's `sortBy`/`order` params.
+- Search query, page number, and sort are reflected in the URL, so a link can be shared or the page refreshed without losing your place. Browser back/forward buttons also work.
 - Loading skeletons, request cancellation, image fallback, and a recoverable error message with retry.
 - Responsive layout down to 320 px.
 

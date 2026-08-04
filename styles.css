@@ -106,6 +106,28 @@ h1 em { color: #385d56; font-weight: 600; }
 }
 .catalogue-bar p, .pager p { margin: 0; }
 
+.sort-control {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+}
+.sort-control select {
+  border: 1px solid var(--line);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+  text-transform: uppercase;
+  letter-spacing: inherit;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.sort-control select:focus { outline: 2px solid #385d56; outline-offset: 1px; }
+
+@media (max-width: 560px) {
+  .catalogue-bar { flex-wrap: wrap; gap: 8px 16px; min-height: auto; padding: 14px 0; }
+}
+
 .message {
   margin: 20px 0 0;
   padding: 16px;
